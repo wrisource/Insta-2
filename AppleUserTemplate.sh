@@ -143,6 +143,8 @@ do
   #+ com.apple.TimeMachine.plist
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.TimeMachine" DoNotOfferNewDisksForBackup -bool YES
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.TimeMachine" AutoBackup -bool NO
+  #+ com.apple.universalaccess.plist
+  sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.universalaccess" voiceOverOnOffKey -bool NO
  fi
 done
 
