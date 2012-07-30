@@ -113,6 +113,33 @@ do
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.SetupAssistant" LastSeenCloudProductVersion "10.8"
   #+ com.apple.systempreferences.plist
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.systempreferences" HiddenPreferencePanes -array "com.apple.preference.notifications" "com.apple.preference.startupdisk" "com.apple.prefs.backup" "com.apple.preferences.softwareupdate" "com.apple.preferences.parentalcontrols" "com.apple.preference.internet" "com.apple.preferences.internetaccounts" "com.apple.preferences.icloud" "com.apple.preferences.sharing" "com.apple.preference.desktopscreeneffect" "com.apple.preference.security" "com.apple.preference.engerysaver" "com.NT-Ware.UniFLOWMacClientConfig"
+  #+ com.apple.symbolichotkeys.plist (Disable Dashboard and Mission Control Keys so they are default Fn keys), arrggg! changes every time the OS adds functionality or new keys. Find and disable 10.8 dictation key.
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:32:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:32:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:33:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:33:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:34:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:34:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:35:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:35:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:36:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:36:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:37:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:37:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:52:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:52:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:59:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:59:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:62:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:62:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:63:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:63:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:64:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:64:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:65:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:65:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:73:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:73:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
  fi
 done
 
