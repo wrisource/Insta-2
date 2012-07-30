@@ -140,6 +140,9 @@ do
   sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:65:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
   sudo /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:73:enabled bool NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
   sudo /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:73:enabled NO" ${TARGET_DIR}/System/Library/User\ Template/${USER_TEMPLATE}/Library/Preferences/com.apple.symbolichotkeys.plist
+  #+ com.apple.TimeMachine.plist
+  sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.TimeMachine" DoNotOfferNewDisksForBackup -bool YES
+  sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.TimeMachine" AutoBackup -bool NO
  fi
 done
 
