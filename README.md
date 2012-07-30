@@ -1,0 +1,4 @@
+AppleUserTemplate
+=================
+
+Default user preferences.
