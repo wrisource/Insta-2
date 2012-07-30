@@ -111,6 +111,8 @@ do
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.SetupAssistant" DidSeeCloudSetup -bool YES
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.SetupAssistant" GestureMovieSeen none
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.SetupAssistant" LastSeenCloudProductVersion "10.8"
+  #+ com.apple.systempreferences.plist
+  sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.systempreferences" HiddenPreferencePanes -array "com.apple.preference.notifications" "com.apple.preference.startupdisk" "com.apple.prefs.backup" "com.apple.preferences.softwareupdate" "com.apple.preferences.parentalcontrols" "com.apple.preference.internet" "com.apple.preferences.internetaccounts" "com.apple.preferences.icloud" "com.apple.preferences.sharing" "com.apple.preference.desktopscreeneffect" "com.apple.preference.security" "com.apple.preference.engerysaver" "com.NT-Ware.UniFLOWMacClientConfig"
  fi
 done
 
