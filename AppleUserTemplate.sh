@@ -17,7 +17,7 @@ ME=$0
 SCRIPT_DIR="$1/Contents/Resources"
 TARGET_DIR="$3"
 
-HOMEPAGE="http://YOURINTRANET.com"
+HOMEPAGE="http://INTRANET"
 
 #+ // fix for PKG
 if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "/" ]; then

@@ -4,9 +4,12 @@
 
 WORKING_DIR=$(/usr/bin/dirname "${0}")
 OUTPUT_DIR=${WORKING_DIR}
+INSTAREADY_DIR=${OUTPUT_DIR}/InstaReady
+
+/bin/mkdir -p "${INSTAREADY_DIR}"
 
 /bin/echo "${0} searching ${WORKING_DIR}"
-for PKG_POSTFLIGHT in `/usr/bin/find -L ${WORKING_DIR} -name "*.sh" | /usr/bin/grep -v "config.sh" | /usr/bin/grep -v "PAYLOAD" | /usr/bin/grep -v "REDUNDANT" | /usr/bin/grep -v "SOURCE" | /usr/bin/grep -v "TEMPLATES"`
+for PKG_POSTFLIGHT in `/usr/bin/find -L ${WORKING_DIR} -name "*.sh" | /usr/bin/grep -v "Config.sh" | /usr/bin/grep -v "Payload" | /usr/bin/grep -v "REDUNDANT" | /usr/bin/grep -v "Source" | /usr/bin/grep -v "TEMPLATES"`
 do
  ROOT=$(/usr/bin/dirname "${PKG_POSTFLIGHT}")
  IDENTIFIER=$(/usr/bin/basename "${PKG_POSTFLIGHT}" | sed 's/.sh//g')
@@ -38,17 +41,17 @@ do
  /usr/bin/defaults write ${OUTPUT_DIR}/${IDENTIFIER}.pkg/Contents/Resources/en.lproj/Description IFPkgDescriptionDescription "${DESCRIPTION}"
  
  #+ Config?
- if [ -r "${ROOT}/config.plist" ]; then
-  /bin/cp -Rf "${ROOT}/config.plist" ${OUTPUT_DIR}/${IDENTIFIER}.pkg/Contents/Resources/config.plist
+ if [ -r "${ROOT}/${IDENTIFIER}Config.plist" ]; then
+  /bin/cp -Rf "${ROOT}/${IDENTIFIER}Config.plist" ${OUTPUT_DIR}/${IDENTIFIER}.pkg/Contents/Resources/config.plist
  fi
- if [ -r "${ROOT}/config.sh" ]; then
-  /bin/cp -Rf "${ROOT}/config.sh" ${OUTPUT_DIR}/${IDENTIFIER}.pkg/Contents/Resources/config.sh
-  ${OUTPUT_DIR}/${IDENTIFIER}.pkg/Contents/Resources/config.sh
+ if [ -r "${ROOT}/${IDENTIFIER}Config.bash" ]; then
+  /bin/cp -Rf "${ROOT}/${IDENTIFIER}Config.bash" ${OUTPUT_DIR}/${IDENTIFIER}.pkg/Contents/Resources/config.bash
+  ${OUTPUT_DIR}/${IDENTIFIER}.pkg/Contents/Resources/config.bash
  fi
  
  #+ Payload?
- if [ -r "${ROOT}/PAYLOAD" ]; then
-  /bin/cp -R "${ROOT}/PAYLOAD" ${OUTPUT_DIR}/${IDENTIFIER}.pkg/Contents/Resources/
+ if [ -r "${ROOT}/${IDENTIFIER}Payload" ]; then
+  /bin/cp -R "${ROOT}/${IDENTIFIER}Payload" ${OUTPUT_DIR}/${IDENTIFIER}.pkg/Contents/Resources/PAYLOAD
  fi
  
  #+ Readme
@@ -62,6 +65,9 @@ do
  /bin/rm -Rf ${OUTPUT_DIR}/ROOT
  /bin/echo "${0} cleaning ${OUTPUT_DIR}/SCRIPTS"
  /bin/rm -Rf ${OUTPUT_DIR}/SCRIPTS
+ 
+ /bin/rm -Rf "${INSTAREADY_DIR}/${IDENTIFIER}.pkg"
+ /bin/mv -f "${OUTPUT_DIR}/${IDENTIFIER}.pkg" "${INSTAREADY_DIR}/"
 
 done
 

@@ -1,0 +1,23 @@
+#!/bin/sh
+#* ard
+#+ chris.gerke@gmail.com
+#+
+#+ Description: Enable sharing for admins, configure sharing for end users.
+#+
+#+ Version: 1.0
+#+
+#+ History:
+#+     1.0: Script.
+#+
+#+ TODO:
+#+     * Add error checking?
+
+#+ Enable Remote Management automatically for admins otherwise configure it so end users have to accept a connection
+/usr/bin/dsmemberutil checkmembership -U ${USER} -G admin | /usr/bin/grep "not"
+if [ "$?" == "0" ]; then
+ /usr/local/bin/ardoff
+else
+ /usr/local/bin/ardon
+fi
+
+exit 0

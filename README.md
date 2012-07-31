@@ -1,8 +1,8 @@
-AppleUserTemplate
+Insta
 =================
 
-Default user preferences.
+InstaDMG AddOns https://github.com/cgerke/Insta
 
-Several ByHost preferences aren't set here, instead they have dedicated scripts you can find in https://github.com/cgerke
+Run BUILD.bash to automate the package builds.
 
 chris.gerke@gmail.com

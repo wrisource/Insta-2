@@ -1,0 +1,395 @@
+#!/bin/sh
+#* AppleUserTemplate
+#+ chris.gerke@gmail.com
+#+
+#+ Description: Payload free. Default Apple User Template preferences.
+#+
+#+ Version: 1.1
+#+
+#+ History:
+#+     1.0: Script EOPROFILE.
+#+
+#+ TODO:
+#+     * Add more error checking?
+#+     * Think about editing existing users?
+
+ME=$0
+SCRIPT_DIR="$1/Contents/Resources"
+TARGET_DIR="$3"
+
+#+ // fix
+if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "/" ]; then
+ TARGET_DIR=""
+fi
+
+#+ Modify ${TARGET_DIR}/System/Library/User Template/Library/Preferences/com.apple.sidebarlists.plist
+for USER_TEMPLATE in `sudo /bin/ls "${TARGET_DIR}/System/Library/User Template"`
+do
+ if [ -r "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences" ]; then
+ 
+  #+ OK, so this is really ugly but the only way to do it if you want to avoid supplying payloads items. I will work on making it nicer when I have time.
+  sudo /bin/cat > "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.sidebarlists.plist" << EOPROFILE
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>favorites</key>
+	<dict>
+		<key>Controller</key>
+		<string>VolumesList</string>
+		<key>CustomListProperties</key>
+		<dict>
+			<key>com.apple.LSSharedFileList.Restricted.upgraded</key>
+			<true/>
+			<key>com.apple.LSSharedFileList.VolumesListMigrated</key>
+			<true/>
+		</dict>
+		<key>ShowEjectables</key>
+		<true/>
+		<key>ShowHardDisks</key>
+		<true/>
+		<key>ShowRemovable</key>
+		<true/>
+		<key>ShowServers</key>
+		<true/>
+		<key>VolumesList</key>
+		<array>
+			<dict>
+				<key>EntryType</key>
+				<integer>16</integer>
+				<key>Name</key>
+				<string>iDisk</string>
+				<key>SpecialID</key>
+				<integer>1766093675</integer>
+				<key>Visibility</key>
+				<string>NeverVisible</string>
+			</dict>
+			<dict>
+				<key>Alias</key>
+				<data>
+				AAAAAAB2AAMAAQAAyk1lwwAASCsAAAAAAAAAAgABB1gA
+				AMoisLgAAAAACSD//gAAAAAAAAAA/////wABAAAADgAQ
+				AAcATgBlAHQAdwBvAHIAawAPAAoABABPAFMAWABMABIA
+				B05ldHdvcmsAABMAAS8A//8AAA==
+				</data>
+				<key>EntryType</key>
+				<integer>16</integer>
+				<key>Name</key>
+				<string>Network</string>
+				<key>SpecialID</key>
+				<integer>1735288180</integer>
+				<key>Visibility</key>
+				<string>NeverVisible</string>
+			</dict>
+			<dict>
+				<key>Alias</key>
+				<data>
+				AAAAAACEAAMAAQAAyk1lwwAASCsAAAAAAAAAAgAAAKUA
+				AMoBn94AAAAACSD//gAAAAAAAAAA/////wABAAAADgAa
+				AAwAQQBwAHAAbABpAGMAYQB0AGkAbwBuAHMADwAKAAQA
+				TwBTAFgATAASAAxBcHBsaWNhdGlvbnMAEwABLwD//wAA
+				</data>
+				<key>CustomItemProperties</key>
+				<dict>
+					<key>com.apple.LSSharedFileList.TemplateSystemSelector</key>
+					<integer>1935819120</integer>
+				</dict>
+				<key>Icon</key>
+				<data>
+				SW1nUgAAASIAAAAARkJJTAAAARYAAAACAAAAAAAAAAAB
+				BgADAAAAAMpNZcMAAEgrAAAAAAAACycAADnYAADKKdM8
+				AAAAAAkg//4AAAAAAAAAAP////8AAQAYAAALJwAACTkA
+				AAk4AAAAhgAAAHkAAAB4AA4ANgAaAFQAbwBvAGwAYgBh
+				AHIAQQBwAHAAcwBGAG8AbABkAGUAcgBJAGMAbwBuAC4A
+				aQBjAG4AcwAPAAoABABPAFMAWABMABIAWlN5c3RlbS9M
+				aWJyYXJ5L0NvcmVTZXJ2aWNlcy9Db3JlVHlwZXMuYnVu
+				ZGxlL0NvbnRlbnRzL1Jlc291cmNlcy9Ub29sYmFyQXBw
+				c0ZvbGRlckljb24uaWNucwATAAEvAP//AAA=
+				</data>
+				<key>Name</key>
+				<string>Applications</string>
+			</dict>
+			<dict>
+				<key>Alias</key>
+				<data>
+				AAAAAACYAAMAAQAAyk1lwwAASCsAAAAAAAStUAAErVIA
+				AMpOkJUAAAAACSD//gAAAAAAAAAA/////wABAAwABK1Q
+				AAAAaAAAAGQADgAQAAcARABlAHMAawB0AG8AcAAPAAoA
+				BABPAFMAWABMABIAF3ByaXZhdGUvdmFyL2FyZC9EZXNr
+				dG9wAAATAAEvAAAVAAIAEP//AAA=
+				</data>
+				<key>CustomItemProperties</key>
+				<dict>
+					<key>com.apple.LSSharedFileList.TemplateSystemSelector</key>
+					<integer>1935819892</integer>
+				</dict>
+				<key>Icon</key>
+				<data>
+				SW1nUgAAASwAAAAARkJJTAAAASAAAAACAAAAAAAAAAAB
+				EAADAAAAAMpNZcMAAEgrAAAAAAAACycAADnbAADKKdM8
+				AAAAAAkg//4AAAAAAAAAAP////8AAQAYAAALJwAACTkA
+				AAk4AAAAhgAAAHkAAAB4AA4APAAdAFQAbwBvAGwAYgBh
+				AHIARABlAHMAawB0AG8AcABGAG8AbABkAGUAcgBJAGMA
+				bwBuAC4AaQBjAG4AcwAPAAoABABPAFMAWABMABIAXVN5
+				c3RlbS9MaWJyYXJ5L0NvcmVTZXJ2aWNlcy9Db3JlVHlw
+				ZXMuYnVuZGxlL0NvbnRlbnRzL1Jlc291cmNlcy9Ub29s
+				YmFyRGVza3RvcEZvbGRlckljb24uaWNucwAAEwABLwD/
+				/wAA
+				</data>
+				<key>Name</key>
+				<string>Desktop</string>
+			</dict>
+			<dict>
+				<key>Alias</key>
+				<data>
+				AAAAAACeAAMAAQAAyk1lwwAASCsAAAAAAAStUAAEvfgA
+				AMpOnyoAAAAACSD//gAAAAAAAAAA/////wABAAwABK1Q
+				AAAAaAAAAGQADgAUAAkARABvAGMAdQBtAGUAbgB0AHMA
+				DwAKAAQATwBTAFgATAASABlwcml2YXRlL3Zhci9hcmQv
+				RG9jdW1lbnRzAAATAAEvAAAVAAIAEP//AAA=
+				</data>
+				<key>CustomItemProperties</key>
+				<dict>
+					<key>com.apple.LSSharedFileList.TemplateSystemSelector</key>
+					<integer>1935819875</integer>
+				</dict>
+				<key>Icon</key>
+				<data>
+				SW1nUgAAATIAAAAARkJJTAAAASYAAAACAAAAAAAAAAAB
+				FgADAAAAAMpNZcMAAEgrAAAAAAAACycAADncAADKKdM8
+				AAAAAAkg//4AAAAAAAAAAP////8AAQAYAAALJwAACTkA
+				AAk4AAAAhgAAAHkAAAB4AA4AQAAfAFQAbwBvAGwAYgBh
+				AHIARABvAGMAdQBtAGUAbgB0AHMARgBvAGwAZABlAHIA
+				SQBjAG8AbgAuAGkAYwBuAHMADwAKAAQATwBTAFgATAAS
+				AF9TeXN0ZW0vTGlicmFyeS9Db3JlU2VydmljZXMvQ29y
+				ZVR5cGVzLmJ1bmRsZS9Db250ZW50cy9SZXNvdXJjZXMv
+				VG9vbGJhckRvY3VtZW50c0ZvbGRlckljb24uaWNucwAA
+				EwABLwD//wAA
+				</data>
+				<key>Name</key>
+				<string>Documents</string>
+			</dict>
+			<dict>
+				<key>Alias</key>
+				<data>
+				AAAAAACeAAMAAQAAyk1lwwAASCsAAAAAAAStUAAEvc4A
+				AMpOnyoAAAAACSD//gAAAAAAAAAA/////wABAAwABK1Q
+				AAAAaAAAAGQADgAUAAkARABvAHcAbgBsAG8AYQBkAHMA
+				DwAKAAQATwBTAFgATAASABlwcml2YXRlL3Zhci9hcmQv
+				RG93bmxvYWRzAAATAAEvAAAVAAIAEP//AAA=
+				</data>
+				<key>CustomItemProperties</key>
+				<dict>
+					<key>com.apple.LSSharedFileList.TemplateSystemSelector</key>
+					<integer>1935819884</integer>
+				</dict>
+				<key>Icon</key>
+				<data>
+				SW1nUgAAABwAAAAAU1lTTAAAABAAAAAAdER3bg==
+				</data>
+				<key>Name</key>
+				<string>Downloads</string>
+			</dict>
+		</array>
+	</dict>
+	<key>networkbrowser</key>
+	<dict>
+		<key>Controller</key>
+		<string>CustomListItems</string>
+		<key>CustomListItems</key>
+		<array/>
+		<key>CustomListProperties</key>
+		<dict>
+			<key>com.apple.NetworkBrowser.backToMyMacEnabled</key>
+			<false/>
+			<key>com.apple.NetworkBrowser.bonjourEnabled</key>
+			<false/>
+		</dict>
+	</dict>
+	<key>savedsearches</key>
+	<dict>
+		<key>Controller</key>
+		<string>CustomListItems</string>
+		<key>CustomListItems</key>
+		<array>
+			<dict>
+				<key>Alias</key>
+				<data>
+				AAAAAAD8AAMAAQAAyk1lwwAASCsAAAAAAAC5ywAAuhQA
+				AMoorHUAAAAACSD//gAAAAAAAAAA/////wABABwAALnL
+				AAC5vwAAuboAALm5AAAAhgAAAHkAAAB4AA4AJgASAFQA
+				bwBkAGEAeQAuAGMAYQBuAG4AZQBkAFMAZQBhAHIAYwBo
+				AA8ACgAEAE8AUwBYAEwAEgBbU3lzdGVtL0xpYnJhcnkv
+				Q29yZVNlcnZpY2VzL0ZpbmRlci5hcHAvQ29udGVudHMv
+				UmVzb3VyY2VzL0Nhbm5lZFNlYXJjaGVzL1RvZGF5LmNh
+				bm5lZFNlYXJjaAAAEwABLwD//wAA
+				</data>
+				<key>Icon</key>
+				<data>
+				SW1nUgAAASQAAAAARkJJTAAAARgAAAACAAAAAAAAAAAB
+				CAADAAAAAMpNZcMAAEgrAAAAAAAAuhUAALoZAADKKKx1
+				AAAAAAkg//4AAAAAAAAAAP////8AAQAkAAC6FQAAuhQA
+				ALnLAAC5vwAAuboAALm5AAAAhgAAAHkAAAB4AA4AFgAK
+				AFQAbwBkAGEAeQAuAGkAYwBuAHMADwAKAAQATwBTAFgA
+				TAASAHBTeXN0ZW0vTGlicmFyeS9Db3JlU2VydmljZXMv
+				RmluZGVyLmFwcC9Db250ZW50cy9SZXNvdXJjZXMvQ2Fu
+				bmVkU2VhcmNoZXMvVG9kYXkuY2FubmVkU2VhcmNoL1Jl
+				c291cmNlcy9Ub2RheS5pY25zABMAAS8A//8AAA==
+				</data>
+				<key>Name</key>
+				<string>Today</string>
+			</dict>
+			<dict>
+				<key>Alias</key>
+				<data>
+				AAAAAAEIAAMAAQAAyk1lwwAASCsAAAAAAAC5ywAAuhwA
+				AMoorHUAAAAACSD//gAAAAAAAAAA/////wABABwAALnL
+				AAC5vwAAuboAALm5AAAAhgAAAHkAAAB4AA4ALgAWAFkA
+				ZQBzAHQAZQByAGQAYQB5AC4AYwBhAG4AbgBlAGQAUwBl
+				AGEAcgBjAGgADwAKAAQATwBTAFgATAASAF9TeXN0ZW0v
+				TGlicmFyeS9Db3JlU2VydmljZXMvRmluZGVyLmFwcC9D
+				b250ZW50cy9SZXNvdXJjZXMvQ2FubmVkU2VhcmNoZXMv
+				WWVzdGVyZGF5LmNhbm5lZFNlYXJjaAAAEwABLwD//wAA
+				</data>
+				<key>Icon</key>
+				<data>
+				SW1nUgAAATQAAAAARkJJTAAAASgAAAACAAAAAAAAAAAB
+				GAADAAAAAMpNZcMAAEgrAAAAAAAAuh0AALohAADKKKx1
+				AAAAAAkg//4AAAAAAAAAAP////8AAQAkAAC6HQAAuhwA
+				ALnLAAC5vwAAuboAALm5AAAAhgAAAHkAAAB4AA4AHgAO
+				AFkAZQBzAHQAZQByAGQAYQB5AC4AaQBjAG4AcwAPAAoA
+				BABPAFMAWABMABIAeFN5c3RlbS9MaWJyYXJ5L0NvcmVT
+				ZXJ2aWNlcy9GaW5kZXIuYXBwL0NvbnRlbnRzL1Jlc291
+				cmNlcy9DYW5uZWRTZWFyY2hlcy9ZZXN0ZXJkYXkuY2Fu
+				bmVkU2VhcmNoL1Jlc291cmNlcy9ZZXN0ZXJkYXkuaWNu
+				cwATAAEvAP//AAA=
+				</data>
+				<key>Name</key>
+				<string>Yesterday</string>
+			</dict>
+			<dict>
+				<key>Alias</key>
+				<data>
+				AAAAAAEIAAMAAQAAyk1lwwAASCsAAAAAAAC5ywAAugwA
+				AMoorHUAAAAACSD//gAAAAAAAAAA/////wABABwAALnL
+				AAC5vwAAuboAALm5AAAAhgAAAHkAAAB4AA4ALgAWAFAA
+				YQBzAHQAIABXAGUAZQBrAC4AYwBhAG4AbgBlAGQAUwBl
+				AGEAcgBjAGgADwAKAAQATwBTAFgATAASAF9TeXN0ZW0v
+				TGlicmFyeS9Db3JlU2VydmljZXMvRmluZGVyLmFwcC9D
+				b250ZW50cy9SZXNvdXJjZXMvQ2FubmVkU2VhcmNoZXMv
+				UGFzdCBXZWVrLmNhbm5lZFNlYXJjaAAAEwABLwD//wAA
+				</data>
+				<key>Icon</key>
+				<data>
+				SW1nUgAAATIAAAAARkJJTAAAASYAAAACAAAAAAAAAAAB
+				FgADAAAAAMpNZcMAAEgrAAAAAAAAug0AALoRAADKKKx1
+				AAAAAAkg//4AAAAAAAAAAP////8AAQAkAAC6DQAAugwA
+				ALnLAAC5vwAAuboAALm5AAAAhgAAAHkAAAB4AA4AHAAN
+				AFQAaABpAHMAVwBlAGUAawAuAGkAYwBuAHMADwAKAAQA
+				TwBTAFgATAASAHdTeXN0ZW0vTGlicmFyeS9Db3JlU2Vy
+				dmljZXMvRmluZGVyLmFwcC9Db250ZW50cy9SZXNvdXJj
+				ZXMvQ2FubmVkU2VhcmNoZXMvUGFzdCBXZWVrLmNhbm5l
+				ZFNlYXJjaC9SZXNvdXJjZXMvVGhpc1dlZWsuaWNucwAA
+				EwABLwD//wAA
+				</data>
+				<key>Name</key>
+				<string>Past Week</string>
+			</dict>
+			<dict>
+				<key>Alias</key>
+				<data>
+				AAAAAAEUAAMAAQAAyk1lwwAASCsAAAAAAAC5ywAAudQA
+				AMoorHUAAAAACSD//gAAAAAAAAAA/////wABABwAALnL
+				AAC5vwAAuboAALm5AAAAhgAAAHkAAAB4AA4ANgAaAEEA
+				bABsACAARABvAGMAdQBtAGUAbgB0AHMALgBjAGEAbgBu
+				AGUAZABTAGUAYQByAGMAaAAPAAoABABPAFMAWABMABIA
+				Y1N5c3RlbS9MaWJyYXJ5L0NvcmVTZXJ2aWNlcy9GaW5k
+				ZXIuYXBwL0NvbnRlbnRzL1Jlc291cmNlcy9DYW5uZWRT
+				ZWFyY2hlcy9BbGwgRG9jdW1lbnRzLmNhbm5lZFNlYXJj
+				aAAAEwABLwD//wAA
+				</data>
+				<key>Icon</key>
+				<data>
+				SW1nUgAAAP4AAAAARkJJTAAAAPIAAAACAAAAAAAAAAAA
+				4gADAAAAAMpNZcMAAEgrAAAAAAAAub8AALqVAADKKKxs
+				AAAAAAkg//4AAAAAAAAAAP////8AAQAYAAC5vwAAuboA
+				ALm5AAAAhgAAAHkAAAB4AA4AIgAQAFMAbQBhAHIAdABG
+				AG8AbABkAGUAcgAuAGkAYwBuAHMADwAKAAQATwBTAFgA
+				TAASAEpTeXN0ZW0vTGlicmFyeS9Db3JlU2VydmljZXMv
+				RmluZGVyLmFwcC9Db250ZW50cy9SZXNvdXJjZXMvU21h
+				cnRGb2xkZXIuaWNucwATAAEvAP//AAA=
+				</data>
+				<key>Name</key>
+				<string>All Documents</string>
+			</dict>
+		</array>
+	</dict>
+	<key>systemitems</key>
+	<dict>
+		<key>Controller</key>
+		<string>VolumesList</string>
+		<key>CustomListProperties</key>
+		<dict>
+			<key>com.apple.LSSharedFileList.VolumesListMigrated</key>
+			<true/>
+		</dict>
+		<key>ShowEjectables</key>
+		<true/>
+		<key>ShowHardDisks</key>
+		<true/>
+		<key>ShowRemovable</key>
+		<true/>
+		<key>ShowServers</key>
+		<true/>
+		<key>VolumesList</key>
+		<array>
+			<dict>
+				<key>EntryType</key>
+				<integer>16</integer>
+				<key>Flags</key>
+				<integer>1</integer>
+				<key>Name</key>
+				<string>Computer</string>
+				<key>SpecialID</key>
+				<integer>1919905652</integer>
+				<key>Visibility</key>
+				<string>AlwaysVisible</string>
+			</dict>
+			<dict>
+				<key>EntryType</key>
+				<integer>16</integer>
+				<key>Name</key>
+				<string>iDisk</string>
+				<key>SpecialID</key>
+				<integer>1766093675</integer>
+				<key>Visibility</key>
+				<string>NeverVisible</string>
+			</dict>
+			<dict>
+				<key>Alias</key>
+				<data>
+				AAAAAAB2AAMAAQAAyk1lwwAASCsAAAAAAAAAAgABB1gA
+				AMoisLgAAAAACSD//gAAAAAAAAAA/////wABAAAADgAQ
+				AAcATgBlAHQAdwBvAHIAawAPAAoABABPAFMAWABMABIA
+				B05ldHdvcmsAABMAAS8A//8AAA==
+				</data>
+				<key>EntryType</key>
+				<integer>16</integer>
+				<key>Name</key>
+				<string>Network</string>
+				<key>SpecialID</key>
+				<integer>1735288180</integer>
+				<key>Visibility</key>
+				<string>NeverVisible</string>
+			</dict>
+		</array>
+	</dict>
+</dict>
+</plist>
+EOPROFILE
+# End the ugliness
+ 
+ fi
+done
+
+exit 0

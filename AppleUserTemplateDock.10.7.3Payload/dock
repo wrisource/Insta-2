@@ -1,0 +1,82 @@
+#!/bin/sh
+#* dockreset
+#+ chris.gerke@gmail.com
+#+
+#+ Description: Standardise dock via LaunchAgent.
+#+
+#+ Boot Volume Only: Yes
+#+
+#+ Version: 1.1
+#+
+#+ History:
+#+     1.1: /Users/$USER changed to $HOME so admins get it.
+#+     1.0: Script.
+#+
+#+ TODO:
+#+     * Add error checking?
+#+     * Convert to python?
+
+CHECKEDFORLAUNCHPAD=$(/usr/bin/defaults read com.apple.dock checked-for-launchpad)
+
+ResetDock() {
+ /usr/local/bin/dockutil --remove "Mission Control"
+ /usr/local/bin/dockutil --remove "Launchpad"
+ /usr/local/bin/dockutil --remove "Safari"
+ /usr/local/bin/dockutil --remove "Mail"
+ /usr/local/bin/dockutil --remove "FaceTime"
+ /usr/local/bin/dockutil --remove "Address Book"
+ /usr/local/bin/dockutil --remove "iCal"
+ /usr/local/bin/dockutil --remove "iTunes"
+ /usr/local/bin/dockutil --remove "Photo Booth"
+ /usr/local/bin/dockutil --remove "iPhoto"
+ /usr/local/bin/dockutil --remove "System Preferences"
+}
+
+#+ New from Dock.app bundle?
+if [ "${CHECKEDFORLAUNCHPAD}" = "" ]; then
+ /bin/echo "DockReset probably from Dock.app bundle."
+ ResetDock
+fi
+
+#+ New from Dock.app bundle?
+if [ "${CHECKEDFORLAUNCHPAD}" = "0" ]; then
+ /bin/echo "DockReset probably from Dock.app bundle."
+ ResetDock
+fi
+
+/usr/local/bin/dockutil --find "RDA Applications" "${HOME}"
+if [ "$?" == "1" ]; then
+ echo "No RDA Applications"
+ ResetDock
+fi
+
+/usr/local/bin/dockutil --find "RDA Documents" "${HOME}"
+if [ "$?" == "1" ]; then
+ echo "No RDA Documents"
+ ResetDock
+fi
+
+/usr/local/bin/dockutil --find "RDA Helpdesk" "${HOME}"
+if [ "$?" == "1" ]; then
+ echo "No RDA Helpdesk"
+ ResetDock
+fi
+
+#+ User folders
+/usr/local/bin/dockutil --add "~/Documents" --view list --sort name --display folder --no-restart "${HOME}"
+/usr/local/bin/dockutil --add "~/Downloads" --view list --sort name --display folder --no-restart "${HOME}"
+/usr/local/bin/dockutil --move "Downloads" --position end --no-restart "${HOME}"
+/usr/local/bin/dockutil --move "Documents" --position end --no-restart "${HOME}"
+
+#+ RDA folders
+/usr/local/bin/dockutil --add "/Library/RDA/DockItems/RDA Helpdesk" --view list --sort name --display folder --no-restart "${HOME}"
+/usr/local/bin/dockutil --add "/Library/RDA/DockItems/RDA Documents" --view list --sort name --display folder --no-restart "${HOME}"
+/usr/local/bin/dockutil --add "/Library/RDA/DockItems/RDA Applications" --view list --sort name --display folder --no-restart "${HOME}"
+/usr/local/bin/dockutil --move "RDA Applications" --position end --no-restart "${HOME}"
+/usr/local/bin/dockutil --move "RDA Documents" --position end --no-restart "${HOME}"
+/usr/local/bin/dockutil --move "RDA Helpdesk" --position end --no-restart "${HOME}"
+
+#+ Remove this always
+/usr/local/bin/dockutil --remove "App Store" "${HOME}"
+
+exit 0
