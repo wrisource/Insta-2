@@ -100,6 +100,7 @@ do
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.Safari" AutoFillFromAddressBook -bool NO
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.Safari" AutoFillMiscellaneousForms -bool NO
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.Safari" AutoFillPasswords -bool NO
+  sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.Safari" DomainsToNeverSetUp -array "aol.com" "facebook.com" "flickr.com" "google.com" "twitter.com" "vimeo.com" "yahoo.com"
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.Safari" IncludeDebugMenu 1
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.Safari" LastDisplayedWelcomePageVersionString -string 4.0
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.Safari" NewWindowBehaviour 0
