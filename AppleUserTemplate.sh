@@ -28,6 +28,8 @@ fi
 for USER_TEMPLATE in `sudo ls ${TARGET_DIR}/System/Library/User\ Template`
 do
  if [ -r "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences" ]; then
+  #+ com.apple.airplay.plist
+  sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.airplay.dock" showInMenuBarIfPresent -bool NO
   #+ com.apple.dock.plist (basic settings only).
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.dock" autohide -bool NO
   sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.dock" launchanim -bool NO
