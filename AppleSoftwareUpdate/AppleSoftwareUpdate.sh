@@ -33,16 +33,16 @@ if [ -r "${SCRIPT_DIR}/PAYLOAD" ]; then
  sudo /bin/chmod u+s "${TARGET_DIR}/usr/local/bin/suson"
 fi
 
-#+ LaunchAgent
-sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchAgents/SoftwareUpdate" Label "com.chrisgerke.SoftwareUpdate"
-sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchAgents/SoftwareUpdate" RunAtLoad -bool TRUE
-sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchAgents/SoftwareUpdate" ProgramArguments -array "/usr/sbin/softwareupdate" "--schedule" "off"
+#+ LaunchDaemon (daemon because softwareupdate requires root)
+sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/SoftwareUpdate" Label "com.chrisgerke.SoftwareUpdate"
+sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/SoftwareUpdate" RunAtLoad -bool TRUE
+sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/SoftwareUpdate" ProgramArguments -array "/usr/sbin/softwareupdate" "--schedule" "off"
 
 #+ Permissions
-sudo /usr/sbin/chown root:wheel "${TARGET_DIR}/Library/LaunchAgents/SoftwareUpdate.plist"
-sudo /bin/chmod 644 "${TARGET_DIR}/Library/LaunchAgents/SoftwareUpdate.plist" 
+sudo /usr/sbin/chown root:wheel "${TARGET_DIR}/Library/LaunchDaemons/SoftwareUpdate.plist"
+sudo /bin/chmod 644 "${TARGET_DIR}/Library/LaunchDaemons/SoftwareUpdate.plist" 
 
 #+ Load Daemon
-sudo /bin/launchctl load -w "${TARGET_DIR}/Library/LaunchAgents/SoftwareUpdate.plist"
+sudo /bin/launchctl load -w "${TARGET_DIR}/Library/LaunchDaemons/SoftwareUpdate.plist"
 
 exit 0
