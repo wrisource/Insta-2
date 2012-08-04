@@ -2,7 +2,7 @@
 #* screensaver
 #+ chris.gerke@gmail.com
 #+
-#+ Description: Default Screensaver.
+#+ Description: Default Screensaver. Define SLIDESHOWS for 10.8 or SLIDESAVER for 10.7
 #+
 #+ Version: 1.0
 #+
@@ -21,62 +21,107 @@ if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "/" ]; then
  TARGET_DIR=""
 fi
 
-#+ UUID
-if [[ `ioreg -rd1 -c IOPlatformExpertDevice | /usr/bin/grep -i "UUID" | cut -c27-50` == "00000000-0000-1000-8000-" ]]; then
- UUID=`ioreg -rd1 -c IOPlatformExpertDevice | /usr/bin/grep -i "UUID" | cut -c51-62 | awk {'print tolower()'}`
-elif [[ `ioreg -rd1 -c IOPlatformExpertDevice | /usr/bin/grep -i "UUID" | cut -c27-50` != "00000000-0000-1000-8000-" ]]; then
- UUID=`ioreg -rd1 -c IOPlatformExpertDevice | /usr/bin/grep -i "UUID" | cut -c27-62`
-fi
+TARGET_OS=$(sudo /usr/bin/defaults read "${TARGET_DIR}/System/Library/CoreServices/SystemVersion" ProductVersion)
+
+TARGET_SLIDESHOWS=""
+TARGET_SLIDESAVER=""
+
+#+ com.apple.screensaver
+/usr/bin/defaults -currentHost write com.apple.screensaver CleanExit -string "YES"
+/usr/bin/defaults -currentHost write com.apple.screensaver idleTime -int "1800"
+/usr/bin/defaults -currentHost write com.apple.screensaver "moduleDict" -dict-add "moduleName" -string "iLifeSlideshows"
+/usr/bin/defaults -currentHost write com.apple.screensaver "moduleDict" -dict-add "path" -string "/System/Library/Frameworks/ScreenSaver.framework/Resources/iLifeSlideshows.saver"
+/usr/bin/defaults -currentHost write com.apple.screensaver "moduleDict" -dict-add "type" -int "0"
+
+#+ com.apple.ScreenSaverPhotoChooser.${UUID}
+/usr/bin/defaults -currentHost write com.apple.ScreenSaverPhotoChooser "CustomFolderDict" -dict-add "identifier" -string "${TARGET_SLIDESHOWS}"
+/usr/bin/defaults -currentHost write com.apple.ScreenSaverPhotoChooser "CustomFolderDict" -dict-add "name" -string "RDA"
+/usr/bin/defaults -currentHost write com.apple.ScreenSaverPhotoChooser LastViewedPhotoPath -string "${TARGET_SLIDESHOWS}"
+/usr/bin/defaults -currentHost write com.apple.ScreenSaverPhotoChooser SelectedFolderPath -string "${TARGET_SLIDESHOWS}"
+/usr/bin/defaults -currentHost write com.apple.ScreenSaverPhotoChooser SelectedSource -int "4"
+
+#+ com.apple.ScreenSaver.iLifeSlideShows.${UUID}
+/usr/bin/defaults -currentHost write com.apple.ScreenSaver.iLifeSlideShows styleKey -string "Snapshots"
 
 #+ Apple User Template
 for USER_TEMPLATE in `sudo /bin/ls "/System/Library/User Template"`
 do
  if [ -r "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences" ]; then
   sudo /bin/mkdir -p "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost"
-  #+ com.apple.screensaver.plist
-  sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.screensaver" "askForPassword" -int "1"
-  sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/com.apple.screensaver" "askForPasswordDelay" -int "5"
-  #+ com.apple.screensaver.${UUID}.plist
-  sudo /usr/bin/defaults write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}" "CleanExit" -string "YES"
-  sudo /usr/libexec/PlistBuddy -c 'Add :CleanExit string YES' "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c 'Add :idleTime integer 900' "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c 'Add :moduleDict dict' "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c 'Add :moduleDict:iLifeMediaGroupType integer 0' "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c "Add :moduleDict:moduleName string Default" "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c "Add :moduleDict:path string ${TARGET_DIR}/Library/Screen Savers/Default.slideSaver" "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c 'Add :moduleDict:type integer 4' "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c 'Add :DisplayType string Photos' "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver.Default.${UUID}.plist"
+  #+ com.apple.screensaver
+  sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver" CleanExit -string "YES"
+  sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver" idleTime -int "1800"
+  if [ -z "${TARGET_OS}" ] || [ "${TARGET_OS}" = "10.8" ]; then
+   /bin/echo "10.8"
+   #+ com.apple.screensaver
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "moduleName" -string "iLifeSlideshows"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "path" -string "/System/Library/Frameworks/ScreenSaver.framework/Resources/iLifeSlideshows.saver"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "type" -int "0"
+   #+ com.apple.ScreenSaverPhotoChooser.${UUID}
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.ScreenSaverPhotoChooser" "CustomFolderDict" -dict-add "identifier" -string "${TARGET_SLIDESHOWS}"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.ScreenSaverPhotoChooser" "CustomFolderDict" -dict-add "name" -string "RDA"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.ScreenSaverPhotoChooser" LastViewedPhotoPath -string "${TARGET_SLIDESHOWS}"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.ScreenSaverPhotoChooser" SelectedFolderPath -string "${TARGET_SLIDESHOWS}"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.ScreenSaverPhotoChooser" SelectedSource -int "4"
+   #+ com.apple.ScreenSaver.iLifeSlideShows.${UUID}
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.ScreenSaver.iLifeSlideShows" styleKey -string "Snapshots" 
+  else
+   /bin/echo "10.7"
+   #+ com.apple.screensaver
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "iLifeMediaGroupType" -int "0"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "moduleName" -string "RDA"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "path" -string "${TARGET_SLIDESAVER}"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "type" -int "0"
+   #+ com.apple.screensaver.Default.${UUID}
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/com.apple.screensaver.Default" DisplayType -string "Photos"  
+  fi
  fi
 done
 
-#+ Existing users
-for USER_DIR in `sudo /bin/ls "/Users"`
+#+ Apple Users
+for USER_DIR in `sudo /bin/ls "${TARGET_DIR}/Users"`
 do
- if [ -r "${TARGET_DIR}/Users/Library/Preferences" ]; then
+ if [ -r "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences" ]; then
   sudo /bin/mkdir -p "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost"
-  #+ com.apple.screensaver.plist
-  sudo /usr/bin/defaults write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/com.apple.screensaver" "askForPassword" -int "1"
-  sudo /usr/bin/defaults write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/com.apple.screensaver" "askForPasswordDelay" -int "5"
-  #+ com.apple.screensaver.${UUID}.plist
-  sudo /usr/bin/defaults write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}" "CleanExit" -string "YES"
-  sudo /usr/libexec/PlistBuddy -c 'Add :CleanExit string YES' "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c 'Add :idleTime integer 900' "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c 'Add :moduleDict dict' "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c 'Add :moduleDict:iLifeMediaGroupType integer 0' "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c "Add :moduleDict:moduleName string Default" "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c "Add :moduleDict:path string ${TARGET_DIR}/Library/Screen Savers/Default.slideSaver" "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c 'Add :moduleDict:type integer 4' "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist"
-  sudo /usr/libexec/PlistBuddy -c 'Add :DisplayType string Photos' "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.Default.${UUID}.plist"
+  #+ com.apple.screensaver
+  sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver" CleanExit -string "YES"
+  sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver" idleTime -int "1800"
+  if [ -z "${TARGET_OS}" ] || [ "${TARGET_OS}" = "10.8" ]; then
+   /bin/echo "10.8"
+   #+ com.apple.screensaver
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "moduleName" -string "iLifeSlideshows"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "path" -string "/System/Library/Frameworks/ScreenSaver.framework/Resources/iLifeSlideshows.saver"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "type" -int "0"
+   #+ com.apple.ScreenSaverPhotoChooser.${UUID}
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.ScreenSaverPhotoChooser" "CustomFolderDict" -dict-add "identifier" -string "${TARGET_SLIDESHOWS}"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.ScreenSaverPhotoChooser" "CustomFolderDict" -dict-add "name" -string "RDA"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.ScreenSaverPhotoChooser" LastViewedPhotoPath -string "${TARGET_SLIDESHOWS}"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.ScreenSaverPhotoChooser" SelectedFolderPath -string "${TARGET_SLIDESHOWS}"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.ScreenSaverPhotoChooser" SelectedSource -int "4"
+   #+ com.apple.ScreenSaver.iLifeSlideShows.${UUID}
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.ScreenSaver.iLifeSlideShows" styleKey -string "Snapshots" 
+  else
+   /bin/echo "10.7"
+   #+ com.apple.screensaver
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "iLifeMediaGroupType" -int "0"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "moduleName" -string "RDA"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "path" -string "${TARGET_SLIDESAVER}"
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver" "moduleDict" -dict-add "type" -int "0"
+   #+ com.apple.screensaver.Default.${UUID}
+   sudo /usr/bin/defaults -currentHost write "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.Default" DisplayType -string "Photos"  
+  fi
   #+ Lockfile
-  sudo /bin/rm -Rf "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/com.apple.screensaver.plist.lockfile"
-  sudo /bin/rm -Rf "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.${UUID}.plist.lockfile"
-  sudo /bin/rm -Rf "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.Default.${UUID}.plist.lockfile"
+  sudo /bin/rm -Rf "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.screensaver.*.lockfile"
+  sudo /bin/rm -Rf "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.ScreenSaverPhotoChooser.*.lockfile"
+  sudo /bin/rm -Rf "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences/ByHost/com.apple.ScreenSaver.iLifeSlideShows.*.lockfile"
   #+ Permissions
   sudo /usr/sbin/chown -R "${USER_DIR}" "${TARGET_DIR}/Users/${USER_DIR}/Library/Preferences"
  fi
 done
 
 #+ Unload Daemon
-sudo /bin/rm -Rf "/Library/LaunchDaemons/ScreenSaver.plist"
+if [ -r "/Library/LaunchDaemons/ScreenSaver.plist" ]; then
+ sudo /usr/bin/srm "/Library/LaunchDaemons/ScreenSaver.plist"
+fi
 
 exit 0
