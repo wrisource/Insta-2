@@ -1,5 +1,6 @@
 #!/bin/sh
 #* AppleAutoLoginUser
+#+ REDUNDANT SCRIPT. https://github.com/MagerValp/CreateUserPkg/downloads VERSION 1.2 NOW SUPPORTS AUTOLOGIN
 #+ chris.gerke@gmail.com
 #+
 #+ Description: Payload required. Auto login a specified user.
