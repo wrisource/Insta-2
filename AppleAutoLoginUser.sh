@@ -1,6 +1,5 @@
 #!/bin/sh
 #* AppleAutoLoginUser
-#+ REDUNDANT SCRIPT. https://github.com/MagerValp/CreateUserPkg/downloads VERSION 1.2 NOW SUPPORTS AUTOLOGIN
 #+ chris.gerke@gmail.com
 #+
 #+ Description: Payload required. Auto login a specified user.
@@ -17,7 +16,7 @@ ME=$0
 SCRIPT_DIR="$1/Contents/Resources"
 TARGET_DIR="$3"
 
-AUTOLOGINUSER=$(/usr/bin/defaults read "${SCRIPT_DIR}/config" AUTOLOGINUSER)
+AUTOLOGINUSER=""
 
 #+ // fix
 if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "/" ]; then
