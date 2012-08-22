@@ -62,6 +62,10 @@ fi
 
 exit 0
 EOPROFILE
+#+ Permissions
+sudo /usr/sbin/chown root:wheel "${TARGET_DIR}/usr/local/bin/ard"
+sudo /bin/chmod 755 "${TARGET_DIR}/usr/local/bin/ard"
+sudo /bin/chmod u+s "${TARGET_DIR}/usr/local/bin/ard"
 
 #* Detect payload & copy
 if [ -r "${SCRIPT_DIR}/PAYLOAD" ]; then
@@ -84,11 +88,9 @@ fi
 sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchAgents/AppleSharing" Label "com.cg.AppleSharing"
 sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchAgents/AppleSharing" RunAtLoad -bool TRUE
 sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchAgents/AppleSharing" ProgramArguments -array "/bin/sh" "-c" "/usr/local/bin/ard"
-
 #+ Permissions
 sudo /usr/sbin/chown root:wheel "${TARGET_DIR}/Library/LaunchAgents/AppleSharing.plist"
 sudo /bin/chmod 644 "${TARGET_DIR}/Library/LaunchAgents/AppleSharing.plist"
-
 #+ Load if booted
 if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "" ]; then
  sudo /bin/launchctl load -w "${TARGET_DIR}/Library/LaunchAgents/AppleSharing.plist"
@@ -98,11 +100,9 @@ fi
 sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/AppleSharingSSH" Label "com.cg.AppleSharingSSH"
 sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/AppleSharingSSH" RunAtLoad -bool TRUE
 sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/AppleSharingSSH" ProgramArguments -array "/usr/sbin/systemsetup" "-setremotelogin" "on"
-
 #+ Permissions
 sudo /usr/sbin/chown root:wheel "${TARGET_DIR}/Library/LaunchDaemons/AppleSharingSSH.plist"
 sudo /bin/chmod 644 "${TARGET_DIR}/Library/LaunchDaemons/AppleSharingSSH.plist"
-
 #+ Load if booted
 if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "" ]; then
  sudo /bin/launchctl load -w "${TARGET_DIR}/Library/LaunchDaemons/AppleSharingSSH.plist"
