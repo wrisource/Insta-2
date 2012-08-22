@@ -16,7 +16,7 @@ ME=$0
 SCRIPT_DIR="$1/Contents/Resources"
 TARGET_DIR="$3"
 
-AUTOLOGINUSER=""
+AUTOLOGINUSER=$(sudo /usr/bin/defaults read "${SCRIPT_DIR}/config" autoLoginUser)
 
 #+ // fix
 if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "/" ]; then

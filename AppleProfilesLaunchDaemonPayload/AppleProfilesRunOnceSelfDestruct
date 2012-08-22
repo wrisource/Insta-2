@@ -1,0 +1,56 @@
+#!/bin/sh
+#* Profiles
+#+ chris.gerke@gmail.com
+#+
+#+ Description: Payload required. VPN Profiles. WiFi Profiles
+#+
+#+ Version: 1.0
+#+
+#+ History:
+#+     1.0: Script.
+#+
+##+ TODO:
+#+     * Add more error checking?
+
+ME=$0
+SCRIPT_DIR="$1/Contents/Resources"
+TARGET_DIR="$3"
+
+#+ // fix
+if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "/" ]; then
+ TARGET_DIR=""
+fi
+
+#+ Remove
+#for PROFILE in `sudo ls ${SCRIPT_DIR}/PAYLOAD/REMOVE`
+#do
+# sudo /usr/bin/profiles -R -F "${SCRIPT_DIR}/PAYLOAD/REMOVE/${PROFILE}"
+#done
+ 
+#+ Add for laptops
+/usr/sbin/system_profiler SPHardwareDataType | /usr/bin/grep "Model Identifier" | /usr/bin/grep "Book"
+if [ "$?" = "0" ]; then
+ for PROFILE in `sudo ls ${TARGET_DIR}/usr/local/bin/*.mobileconfig`
+ do
+  sudo /usr/bin/profiles -I -F "${PROFILE}"
+ done
+fi
+
+#+ Clean
+for PROFILE in `sudo ls ${TARGET_DIR}/usr/local/bin/*.mobileconfig`
+do
+ sudo /bin/rm -Rf "${PROFILE}"
+done
+
+#+ Unload
+if [ -r "/Library/LaunchDaemons/AppleProfiles.plist" ]; then
+ sudo /bin/launchctl stop com.cg.AppleProfiles
+ sudo /bin/launchctl unload /Library/LaunchDaemons/AppleProfiles.plist
+ sudo /bin/launchctl remove com.cg.AppleProfiles
+ sudo /usr/bin/srm "/Library/LaunchDaemons/AppleProfiles.plist"
+fi
+
+#+ Self destruct
+sudo /usr/bin/srm "${0}"
+
+exit 0
