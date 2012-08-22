@@ -95,7 +95,7 @@ if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "" ]; then
 fi
 
 #+ LaunchDaemon
-sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/AppleSharingSSH" Label "com.cg.SSH"
+sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/AppleSharingSSH" Label "com.cg.AppleSharingSSH"
 sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/AppleSharingSSH" RunAtLoad -bool TRUE
 sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/AppleSharingSSH" ProgramArguments -array "/usr/sbin/systemsetup" "-setremotelogin" "on"
 
