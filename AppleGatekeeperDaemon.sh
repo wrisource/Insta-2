@@ -22,20 +22,15 @@ if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "/" ]; then
 fi
 
 #+ LaunchDaemon (daemon because softwareupdate requires root)
-sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/GateKeeper" Label "com.chrisgerke.GateKeeper"
-sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/GateKeeper" RunAtLoad -bool TRUE
-sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/GateKeeper" ProgramArguments -array "/usr/sbin/spctl" "--master-disable"
-
-#+ or like this if you want to do it once
-#+ /usr/bin/defaults write /var/db/SystemPolicy-prefs enabled no
-
+sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/AppleGateKeeper" Label "com.cg.AppleGateKeeper"
+sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/AppleGateKeeper" RunAtLoad -bool TRUE
+sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/AppleGateKeeper" ProgramArguments -array "/usr/sbin/spctl" "--master-disable"
 #+ Permissions
-sudo /usr/sbin/chown root:wheel "${TARGET_DIR}/Library/LaunchDaemons/GateKeeper.plist"
-sudo /bin/chmod 644 "${TARGET_DIR}/Library/LaunchDaemons/GateKeeper.plist" 
-
+sudo /usr/sbin/chown root:wheel "${TARGET_DIR}/Library/LaunchDaemons/AppleGateKeeper.plist"
+sudo /bin/chmod 644 "${TARGET_DIR}/Library/LaunchDaemons/AppleGateKeeper.plist" 
 #+ Load if booted
 if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "" ]; then
- sudo /bin/launchctl load -w "${TARGET_DIR}/Library/LaunchDaemons/GateKeeper.plist"
+ sudo /bin/launchctl load -w "${TARGET_DIR}/Library/LaunchDaemons/AppleGateKeeper.plist"
 fi
 
 exit 0
