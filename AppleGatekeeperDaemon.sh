@@ -33,7 +33,9 @@ sudo /usr/bin/defaults write "${TARGET_DIR}/Library/LaunchDaemons/GateKeeper" Pr
 sudo /usr/sbin/chown root:wheel "${TARGET_DIR}/Library/LaunchDaemons/GateKeeper.plist"
 sudo /bin/chmod 644 "${TARGET_DIR}/Library/LaunchDaemons/GateKeeper.plist" 
 
-#+ Load Daemon
-sudo /bin/launchctl load -w "${TARGET_DIR}/Library/LaunchDaemons/GateKeeper.plist"
+#+ Load if booted
+if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "" ]; then
+ sudo /bin/launchctl load -w "${TARGET_DIR}/Library/LaunchDaemons/GateKeeper.plist"
+fi
 
 exit 0

@@ -1,0 +1,66 @@
+#!/bin/sh
+#* AppleMultiTouch
+#+ chris.gerke@gmail.com
+#+
+#+ Description: Set trackpad click.
+#+
+#+ Version: 1.1
+#+
+#+ History:
+#+     1.1: defaults instead of plistbuddy
+#+
+#+ TODO:
+#+     * Add error checking?
+
+ME=$0
+SCRIPT_DIR="$1/Contents/Resources"
+TARGET_DIR="$3"
+
+#+ // fix
+if [ -z "${TARGET_DIR}" ] || [ "${TARGET_DIR}" = "/" ]; then
+ TARGET_DIR=""
+fi
+
+
+#+ .GlobalPreferences.${UUID}.plist
+/usr/bin/defaults -currentHost write "${HOME}/Library/Preferences/ByHost/.GlobalPreferences" "com.apple.mouse.tapBehavior" -int 1
+
+#+ Lockfile
+/bin/rm -Rf "${HOME}/Library/Preferences/ByHost/.GlobalPreferences.*.plist.lockfile"
+
+#+ Apple User Template, booted volume only
+for USER_TEMPLATE in `sudo /bin/ls "/System/Library/User Template"`
+do
+ if [ -r "/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences" ]; then
+  sudo /bin/mkdir -p "/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost"
+  #+ .GlobalPreferences.${UUID}.plist
+  sudo /usr/bin/defaults -currentHost write "/System/Library/User Template/${USER_TEMPLATE}/Library/Preferences/ByHost/.GlobalPreferences" "com.apple.mouse.tapBehavior" -int 1
+ fi
+done
+
+#+ Existing users booted volume only
+for USER_DIR in `sudo /bin/ls "/Users"`
+do
+ if [ -r "/Users/${USER_DIR}/Library/Preferences" ]; then
+  sudo /bin/mkdir -p "/Users/${USER_DIR}/Library/Preferences/ByHost"
+  #+ .GlobalPreferences.${UUID}.plist
+  sudo /usr/bin/defaults -currentHost write "/Users/${USER_DIR}/Library/Preferences/ByHost/.GlobalPreferences" "com.apple.mouse.tapBehavior" -int 1
+  #+ Lockfile
+  sudo /bin/rm -Rf "/Users/${USER_DIR}/Library/Preferences/ByHost/.GlobalPreferences.*.plist.lockfile"
+  #+ Permissions
+  sudo /usr/sbin/chown -R "${USER_DIR}" "/Users/${USER_DIR}/Library/Preferences"
+ fi
+done
+
+#+ Unload
+if [ -r "/Library/LaunchDaemons/AppleMultiTouchRunOnce.plist" ]; then
+ sudo /bin/launchctl stop com.cg.AppleMultiTouchRunOnce
+ sudo /bin/launchctl unload /Library/LaunchDaemons/AppleMultiTouchRunOnce.plist
+ sudo /bin/launchctl remove com.cg.AppleMultiTouchRunOnce
+ sudo /usr/bin/srm "/Library/LaunchDaemons/AppleMultiTouchRunOnce.plist"
+fi
+
+#+ Self destruct
+#sudo /usr/bin/srm "${0}"
+
+exit 0
