@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>MOTD</key>
-	<string></string>
+	<string>Unauthorized access to these resources is prohibited.</string>
 	<key>VNCPASSWD</key>
 	<string></string>
 </dict>
